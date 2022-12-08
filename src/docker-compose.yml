@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "tryitter-strong-password"
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - "'adicionar path aqui':/var/opt/mssql/data"
