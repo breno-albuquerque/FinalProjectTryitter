@@ -7,11 +7,11 @@ namespace Tryitter.Controllers
 {
     [ApiController]
     [Route("students")]
-    public class StudentsController : Controller
+    public class StudentController : Controller
     {
         private readonly ITryitterRepository _tryitterRepository;
 
-        public StudentsController(ITryitterRepository tryitterRepository)
+        public StudentController(ITryitterRepository tryitterRepository)
         {
             _tryitterRepository = tryitterRepository;
         }
