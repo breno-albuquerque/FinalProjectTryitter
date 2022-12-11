@@ -4,7 +4,7 @@ namespace Tryitter.Transport
 {
     public class CreateStudentRequest
     {
-        [JsonPropertyName("cpf")]
+        [JsonPropertyName("email")]
         public string? Email { get; set; }
 
         [JsonPropertyName("firstName")]
