@@ -21,7 +21,7 @@ namespace Tryitter.Controllers
         {
             var student = new Student
             {
-                Cpf = request.Cpf,
+                Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
             };
