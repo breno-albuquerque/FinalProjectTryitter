@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tryitter.Entities;
 using Tryitter.Repository;
@@ -16,20 +17,29 @@ namespace Tryitter.Controllers
             _tryitterRepository = tryitterRepository;
         }
 
-        [HttpPost("post")]
-        public IActionResult CreateStudent([FromBody] CreateStudentRequest request)
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult CreateStudent([FromBody] Student student)
         {
             
-            var student = new Student
+            string token = _tryitterRepository.CreateStudent(student);
+            if (token == null)
             {
-                Email = request.Email,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-            };
+                return Problem("Student already exists", default, 400);
+            }
+            return StatusCode(201, new { token });
+        }
 
-            _tryitterRepository.CreateStudent(student);
-
-            return NoContent();
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public IActionResult StudentLogin([FromBody] Login login)
+        {
+            string token = _tryitterRepository.StudentLogin(login);
+            if (token == null)
+            {
+                return Problem("Student does not exists", default, 400);
+            }
+            return StatusCode(201, new { token });
         }
     }
 }

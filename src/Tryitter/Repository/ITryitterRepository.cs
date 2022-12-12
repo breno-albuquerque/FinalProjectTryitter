@@ -4,6 +4,7 @@ namespace Tryitter.Repository
 {
     public interface ITryitterRepository
     {
-        void CreateStudent(Student student);
+        string CreateStudent(Student student);
+        string StudentLogin(Login login);
     }
 }

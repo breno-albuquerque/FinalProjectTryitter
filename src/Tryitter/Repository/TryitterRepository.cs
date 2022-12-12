@@ -1,25 +1,39 @@
 ﻿using Tryitter.Entities;
+using Tryitter.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tryitter.Repository
 {
     public class TryitterRepository : ITryitterRepository
     {
-        private readonly ITryitterContest _context;
+        private readonly TryitterContext _context;
+        private readonly TokenGenerator _tokenGenerator = new();
 
-        public TryitterRepository(ITryitterContext context)
+        public TryitterRepository(TryitterContext context)
         {
             _context = context;
         }
 
-        public void CreateStudent(Student student)
+        public string? CreateStudent(Student student)
         {
+            Student studentExists = _context.Students.Where(e => e.Email == student.Email).FirstOrDefault();
+            if (studentExists != null)
+            {
+                return null;
+            }
             _context.Students.Add(student);
 
             _context.SaveChanges();
+            return _tokenGenerator.Generate(student);
         }
-        private bool StudentExists(int registration)
+        public string? StudentLogin(Login login)
         {
-            return (_context.Students?.Any(e => e.Registration == registration)).GetValueOrDefault();
+            Student? student = _context.Students.Where(e =>e.Email == login.Email && e.Password == login.Password).FirstOrDefault();
+            if (student == null)
+            {
+                return null;
+            }
+            return _tokenGenerator.Generate(student);
         }
   }
 }
