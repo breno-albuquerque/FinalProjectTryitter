@@ -19,6 +19,7 @@ namespace Tryitter.Controllers
         [HttpPost("post")]
         public IActionResult CreateStudent([FromBody] CreateStudentRequest request)
         {
+            
             var student = new Student
             {
                 Email = request.Email,

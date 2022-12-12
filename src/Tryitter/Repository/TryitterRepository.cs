@@ -4,7 +4,7 @@ namespace Tryitter.Repository
 {
     public class TryitterRepository : ITryitterRepository
     {
-        private readonly ITryitterContext _context;
+        private readonly ITryitterContest _context;
 
         public TryitterRepository(ITryitterContext context)
         {
@@ -17,5 +17,9 @@ namespace Tryitter.Repository
 
             _context.SaveChanges();
         }
-    }
+        private bool StudentExists(int registration)
+        {
+            return (_context.Students?.Any(e => e.Registration == registration)).GetValueOrDefault();
+        }
+  }
 }
