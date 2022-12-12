@@ -3,9 +3,8 @@
     public class Post
     {
         public int? PostId { get; set; }
-
-        public Student Student { get; set; }
-
+        public int StudentId { get; set; }
         public string Text { get; set; }
-    }
+        public object? Images { get; set; }
+  }
 }
