@@ -4,6 +4,8 @@ namespace Tryitter.Repository
 {
     public interface ITryitterRepository
     {
+        string CreateStudent(Student student);
+        string StudentLogin(Login login);
         void CreateStudent(Student student);
         void CreatePost (Post post);
         Post? GetPost (int postId);

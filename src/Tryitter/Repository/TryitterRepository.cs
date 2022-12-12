@@ -1,19 +1,26 @@
+﻿using Tryitter.Entities;
+using Tryitter.Services;
 ﻿using Microsoft.EntityFrameworkCore;
-using Tryitter.Entities;
 
 namespace Tryitter.Repository
 {
     public class TryitterRepository : ITryitterRepository
     {
-        private readonly ITryitterContext _context;
+        private readonly TryitterContext _context;
+        private readonly TokenGenerator _tokenGenerator = new();
 
-        public TryitterRepository(ITryitterContext context)
+        public TryitterRepository(TryitterContext context)
         {
             _context = context;
         }
 
-        public void CreateStudent(Student student)
+        public string? CreateStudent(Student student)
         {
+            Student studentExists = _context.Students.Where(e => e.Email == student.Email).FirstOrDefault();
+            if (studentExists != null)
+            {
+                return null;
+            }
             _context.Students.Add(student);
             _context.SaveChanges();
         }
@@ -22,6 +29,14 @@ namespace Tryitter.Repository
         {
             _context.Posts.Add(post);
             _context.SaveChanges();
+            return _tokenGenerator.Generate(student);
+        }
+
+        public string? StudentLogin(Login login)
+        {
+            Student? student = _context.Students.Where(e =>e.Email == login.Email && e.Password == login.Password).FirstOrDefault();
+            
+            return _tokenGenerator.Generate(student);
         }
 
         public Post? GetPost(int postId)
@@ -41,8 +56,8 @@ namespace Tryitter.Repository
             if (student == null)
             {
                 return null;
-            }
+            }      
             return _context.Posts.Include(p => p.Images).Where(p => p.StudentId == studentId).OrderByDescending(p => p.PostId).ToList();
-        }
+        }           
     }
 }
