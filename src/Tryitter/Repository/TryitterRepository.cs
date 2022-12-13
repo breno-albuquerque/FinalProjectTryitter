@@ -17,25 +17,31 @@ namespace Tryitter.Repository
         public string? CreateStudent(Student student)
         {
             Student studentExists = _context.Students.Where(e => e.Email == student.Email).FirstOrDefault();
+
             if (studentExists != null)
             {
                 return null;
             }
+
             _context.Students.Add(student);
             _context.SaveChanges();
+
+            return _tokenGenerator.Generate(student);
         }
 
         public void CreatePost(Post post)
         {
             _context.Posts.Add(post);
             _context.SaveChanges();
-            return _tokenGenerator.Generate(student);
         }
 
         public string? StudentLogin(Login login)
         {
             Student? student = _context.Students.Where(e =>e.Email == login.Email && e.Password == login.Password).FirstOrDefault();
-            
+
+            if (student == null)
+                return null;
+
             return _tokenGenerator.Generate(student);
         }
 
@@ -53,11 +59,13 @@ namespace Tryitter.Repository
          public List<Post>? Posts(int studentId)
         {
             var student = _context.Students.Where(s => s.StudentId == studentId).FirstOrDefault();
+
             if (student == null)
             {
                 return null;
-            }      
-            return _context.Posts.Include(p => p.Images).Where(p => p.StudentId == studentId).OrderByDescending(p => p.PostId).ToList();
+            }
+            
+            return _context.Posts.Include(p => p.Image).Where(p => p.StudentId == studentId).OrderByDescending(p => p.PostId).ToList();
         }           
     }
 }
