@@ -18,7 +18,7 @@ namespace TryitterTest.Transport
         }
 
         [Fact(DisplayName = "Deve instanciar o objeto com propriedades corretas")]
-        public void ShouldInstanceLoginRequest()
+        public void ShouldInstanceObject()
         {
             //  arrange - act
             var createPostRequest = new CreatePostRequest
