@@ -1,6 +1,7 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 using Tryitter.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,18 @@ builder.Services.AddScoped<ITryitterRepository, TryitterRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+    {
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+        });
+    }
+);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -46,7 +58,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseCors(c => c .AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.MapControllers();
 
