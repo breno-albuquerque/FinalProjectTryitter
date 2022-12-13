@@ -23,20 +23,20 @@ namespace Tryitter.Controllers
         {
             Post post = new()
             {
+                StudentId = request.StudentId,
                 Image = request.Image,
                 Text = request.Post
             };
 
             _tryitterRepository.CreatePost(post);
 
-            return Ok(post);
-            //return CreatedAtAction(nameof(CreatePost), new { id = request.StudentId }, post);
+            return CreatedAtAction(nameof(CreatePost), new { id = request.StudentId }, post);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetPost(int postId)
+        public IActionResult GetPost([FromRoute] int id)
         {
-            var post = _tryitterRepository.GetPost(postId);
+            var post = _tryitterRepository.GetPost(id);
 
             if (post == null)
             {
@@ -47,7 +47,7 @@ namespace Tryitter.Controllers
         }
 
         //[HttpGet]
-        //public ActionResult<IEnumerable<Post>> Get()
+        //public ActionResult<IEnumerable<Post>> Posts()
         //{
         //    var posts = _tryitterRepository.Posts.AsNoTracking().Take(10).ToList();
 
@@ -55,6 +55,7 @@ namespace Tryitter.Controllers
         //    {
         //        return NotFound("Posts não encontrados");
         //    }
+
         //    return posts;
         //}
     }
