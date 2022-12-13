@@ -17,4 +17,3 @@ namespace Tryitter.Entities
         public int StudentId { get; set; }
     }
   }
-}
