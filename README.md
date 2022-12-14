@@ -1,8 +1,14 @@
 # Tryitter
 #### Versão simplificada do backend de uma rede social totalmente baseada em texto.
 
-#### Descrição
+### Descrição:
 O objetivo do Tryitter é proporcionar um ambiente em que pessoas estudantes poderão, por meio de textos e imagens, compartilhar suas experiências e também acessar posts que possam contribuir para seu aprendizado.
+
+#### Autores desse projeto:
+
+- [Breno Albuquerque](https://github.com/breno-albuquerque)
+- [Quesia Mendes](https://github.com/Ques-Mendes)
+- [Francinele Oliveira](https://github.com/Fran-C-Oliveira)
 
 ## Iniciando
 
