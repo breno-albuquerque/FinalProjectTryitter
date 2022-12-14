@@ -19,43 +19,117 @@ namespace Tryitter.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult CreateStudent([FromBody] CreateStudentRequest request)
+        public IActionResult CreateStudent([FromBody] StudentRequest request)
         {
-            var student = new Student
+            try
             {
-                Email = request.Email!,
-                Password = request.Password,
-                FullName = request.FullName,
-            };
+                var student = new Student
+                {
+                    Email = request.Email,
+                    Password = request.Password,
+                    FullName = request.FullName,
+                };
 
-            string token = _tryitterRepository.CreateStudent(student)!;
+                string token = _tryitterRepository.CreateStudent(student);
 
-            if (token == null)
+                return StatusCode(201, new { token });
+            } 
+            catch (InvalidOperationException e)
             {
-                return Problem("Student already exists", default, 400);
+                return Conflict(e.Message);
             }
+        }
 
-            return StatusCode(201, new { token });
+        [HttpGet("{id}")]
+        [Authorize]
+        public IActionResult GetStudent([FromRoute] int id)
+        {
+            try
+            {
+                var loggedStudentId = User.Claims.FirstOrDefault();  
+
+                if (loggedStudentId.Value != id.ToString())
+                    return Unauthorized($"You are not logged as student {id}");
+
+                var student = _tryitterRepository.GetStudent(id);
+
+                return Ok(student);
+            }
+            catch (InvalidOperationException e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public IActionResult UpdateStudent([FromRoute] int id, [FromBody] StudentRequest request)
+        {
+            try
+            {
+                var loggedStudentId = User.Claims.FirstOrDefault();
+
+                if (loggedStudentId.Value != id.ToString())
+                    return Unauthorized($"You are not logged as student {id}");
+
+                var student = new Student
+                {
+                    Email = request.Email,
+                    Password = request.Password,
+                    FullName = request.FullName,
+                };
+
+                _tryitterRepository.UpdateStudent(id, student);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public IActionResult DeleteStudent([FromRoute] int id)
+        {
+            try
+            {
+                var loggedStudentId = User.Claims.FirstOrDefault();
+
+                if (loggedStudentId.Value != id.ToString())
+                    return Unauthorized($"You are not logged as student {id}");
+
+                _tryitterRepository.DeleteStudent(id);
+
+                return NoContent();
+            }
+            catch (InvalidOperationException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
         public IActionResult StudentLogin([FromBody] LoginRequest request)
         {
-            var login = new Login
+            try
             {
-                Email = request.Email,
-                Password = request.Password
-            };
+                var login = new Login
+                {
+                    Email = request.Email,
+                    Password = request.Password
+                };
 
-            string token = _tryitterRepository.StudentLogin(login);
+                string token = _tryitterRepository.StudentLogin(login);
 
-            if (token == null)
-            {
-                return Problem("Student does not exists", default, 400);
+                return StatusCode(201, new { token });
             }
-
-            return StatusCode(201, new { token });
+            catch (InvalidOperationException e)
+            {
+                return Unauthorized(e.Message);
+            }
         }
     }
 }

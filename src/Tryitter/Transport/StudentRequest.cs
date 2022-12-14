@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Tryitter.Transport
 {
-    public class CreateStudentRequest
+    public class StudentRequest
     {
         [JsonPropertyName("email")]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Email is not valid")]

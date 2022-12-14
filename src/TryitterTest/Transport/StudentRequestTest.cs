@@ -3,13 +3,13 @@ using Xunit.Sdk;
 
 namespace TryitterTest.Transport
 {
-    public class CreateStudentRequestTest
+    public class StudentRequestTest
     {
         private readonly string _email;
         private readonly string _password;
         private readonly string _fullName;
 
-        public CreateStudentRequestTest()
+        public StudentRequestTest()
         {
             _email = "teste@teste.com";
             _password = "teste123";
@@ -20,7 +20,7 @@ namespace TryitterTest.Transport
         public void ShouldInstanceObject()
         {
             //  arrange - act
-            var createStudentRequest = new CreateStudentRequest
+            var createStudentRequest = new StudentRequest
             {
                 Email = _email,
                 Password = _password,
@@ -35,7 +35,7 @@ namespace TryitterTest.Transport
         public void ShouldThrowExcepetionWithInvalidProperties()
         {
             //  arrange 
-            var createStudentRequest = new CreateStudentRequest
+            var createStudentRequest = new StudentRequest
             {
                 Email = "teste",
                 Password = _password,
@@ -49,7 +49,7 @@ namespace TryitterTest.Transport
             act.Should().Throw<XunitException>();
         }
 
-        private static void AssertProperties(CreateStudentRequest result, string email, string password, string fullName)
+        private static void AssertProperties(StudentRequest result, string email, string password, string fullName)
         {
             result.Email.Should().Be(email);
             result.Password.Should().Be(password);
