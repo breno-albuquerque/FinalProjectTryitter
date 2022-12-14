@@ -4,13 +4,13 @@ using Xunit.Sdk;
 
 namespace TryitterTest.Transport
 {
-    public class CreatePostRequestTest
+    public class PostRequestTest
     {
         private readonly int _studentId;
         private readonly string _post;
         private readonly string _image;
 
-        public CreatePostRequestTest()
+        public PostRequestTest()
         {
             _studentId = 1;
             _post = "teste123";
@@ -21,7 +21,7 @@ namespace TryitterTest.Transport
         public void ShouldInstanceObject()
         {
             //  arrange - act
-            var createPostRequest = new CreatePostRequest
+            var createPostRequest = new PostRequest
             {
                 StudentId = _studentId,
                 Post = _post,
@@ -36,7 +36,7 @@ namespace TryitterTest.Transport
         public void ShouldThrowExcepetionWithInvalidProperties()
         {
             //  arrange 
-            var createPostRequest = new CreatePostRequest
+            var createPostRequest = new PostRequest
             {
                 Post = _post,
                 Image = _image
@@ -49,7 +49,7 @@ namespace TryitterTest.Transport
             act.Should().Throw<XunitException>();
         }
 
-        private static void AssertProperties(CreatePostRequest result, int studentId, string post, string image)
+        private static void AssertProperties(PostRequest result, int studentId, string post, string image)
         {
             result.StudentId.Should().Be(studentId);
             result.Post.Should().Be(post);

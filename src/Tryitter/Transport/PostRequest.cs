@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Tryitter.Transport
 {
-    public class CreatePostRequest
+    public class PostRequest
     {
         [JsonPropertyName("studentId")]
         [Required(ErrorMessage = "O id do estudante é obrigatório")]
