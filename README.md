@@ -141,5 +141,5 @@ Uma pessoa estudante deve poder também publicar posts em seu perfil, que poder�
 - POST `/login` - para login de usuários já cadastrados;
 
 ##
- - Foi desenvolvida uma autenticação utilizando <token>, necessária para todas as demais rotas além de `Cadastro` e `Login`;  
+ - Foi desenvolvida uma autenticação utilizando `JWT Bearer`, necessária para todas as demais rotas além de `Cadastro` e `Login`;  
  - Os testes foram desenvolvidos utilizando os frameworks <b>`xUnit`</b> e <b>`FluentAssertions`</b>. 
