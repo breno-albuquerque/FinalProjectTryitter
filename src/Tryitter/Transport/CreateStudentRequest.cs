@@ -10,9 +10,9 @@ namespace Tryitter.Transport
         public string? Email { get; set; }
 
         [JsonPropertyName("password")]
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
 
         [JsonPropertyName("fullName")]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = null!;
     }
 }
