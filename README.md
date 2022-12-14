@@ -10,6 +10,9 @@ O objetivo do Tryitter é proporcionar um ambiente em que pessoas estudantes pod
 - [Quesia Mendes](https://github.com/Ques-Mendes)
 - [Francinele Oliveira](https://github.com/Fran-C-Oliveira)
 
+#### Demo do Projeto:
+- [Tryitter Demo](https://www.youtube.com/watch?v=TQOAJHbK6Wg)
+
 ## Iniciando
 
 Clone o projeto
