@@ -66,42 +66,44 @@ namespace Tryitter.Repository
             return _tokenGenerator.Generate(student);
         }
 
-
-
-
-
-
         public void CreatePost(Post post)
         {
             _context.Posts.Add(post);
             _context.SaveChanges();
         }
 
-
-
-        public Post? GetPost(int postId)
+        public Post GetPost(int postId)
         {
-            return _context.Posts.Where(p => p.PostId == postId).FirstOrDefault();
+            var post = _context.Posts.Where(p => p.PostId == postId).FirstOrDefault();
+
+            if (post == null)
+                throw new InvalidOperationException("Post not found");
+
+            return post;
         }
 
-        public void EditPost(Post post, Post updatePost)
+        public void UpdatePost(int postId, Post updatePost)
         {
-            post.Text = updatePost.Text ?? post.Text;
+            var post = GetPost(postId);
+
+            if (post.StudentId != updatePost.StudentId)
+                throw new InvalidOperationException($"You can't update a post from another student");
+
+            post.Text = updatePost.Text;
+            post.Image = updatePost.Image;
+
             _context.SaveChanges();
         }
 
-         public List<Post>? Posts(int studentId)
+        public void DeletePost(int postId, int studentId)
         {
-            var student = _context.Students.Where(s => s.StudentId == studentId).FirstOrDefault();
+            var post = GetPost(postId);
 
-            if (student == null)
-            {
-                return null;
-            }
-            
-            return _context.Posts.Include(p => p.Image).Where(p => p.StudentId == studentId).OrderByDescending(p => p.PostId).ToList();
+            if (post.StudentId != studentId)
+                throw new InvalidOperationException($"You can't delete a post from another student");
+
+            _context.Remove(post);
+            _context.SaveChanges();
         }
-
-
     }
 }

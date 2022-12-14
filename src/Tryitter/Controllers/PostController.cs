@@ -19,44 +19,81 @@ namespace Tryitter.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult CreatePost(CreatePostRequest request)
+        public IActionResult CreatePost(PostRequest request)
         {
+
+            var loggedStudentId = int.Parse(User.Claims.FirstOrDefault().Value);
+
             Post post = new()
             {
-                StudentId = request.StudentId,
+                StudentId = loggedStudentId,
                 Image = request.Image,
                 Text = request.Post
             };
 
             _tryitterRepository.CreatePost(post);
 
-            return CreatedAtAction(nameof(CreatePost), new { id = request.StudentId }, post);
+            return CreatedAtAction(nameof(CreatePost), new { id = loggedStudentId }, post);
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetPost([FromRoute] int id)
         {
-            var post = _tryitterRepository.GetPost(id);
-
-            if (post == null)
+            try
             {
-                return NotFound(new { Message = "Usuário não encontrado" });
+                var post = _tryitterRepository.GetPost(id);
+
+                return Ok(post);
+            }
+            catch (InvalidOperationException e)
+            {
+                return NotFound(e.Message);
             }
 
-            return Ok(post);
         }
 
-        //[HttpGet]
-        //public ActionResult<IEnumerable<Post>> Posts()
-        //{
-        //    var posts = _tryitterRepository.Posts.AsNoTracking().Take(10).ToList();
+        [HttpPut("{id}")]
+        [Authorize]
+        public IActionResult UpdatePost([FromRoute] int id, [FromBody] PostRequest request)
+        {
+            try
+            {
+                var loggedStudentId = int.Parse(User.Claims.FirstOrDefault().Value);
 
-        //    if (posts is null)
-        //    {
-        //        return NotFound("Posts não encontrados");
-        //    }
+                Post post = new()
+                {
+                    StudentId = loggedStudentId,
+                    Image = request.Image,
+                    Text = request.Post
+                };
 
-        //    return posts;
-        //}
+                _tryitterRepository.UpdatePost(id, post);
+
+                return Ok(post);
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public IActionResult DeletePost([FromRoute] int id)
+        {
+            try
+            {
+                var loggedStudentId = int.Parse(User.Claims.FirstOrDefault().Value);
+
+                _tryitterRepository.DeletePost(id, loggedStudentId);
+
+                return NoContent();
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

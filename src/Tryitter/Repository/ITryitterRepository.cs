@@ -14,12 +14,12 @@ namespace Tryitter.Repository
 
         string StudentLogin(Login login);
 
-
-
-
         void CreatePost (Post post);
-        Post? GetPost (int postId);
-        List<Post>? Posts(int studentId);
-        void EditPost(Post post, Post updatePost);
+
+        Post GetPost (int postId);
+
+        void UpdatePost(int postId, Post post);
+
+        void DeletePost(int postId, int studentId);
     }
 }
