@@ -23,12 +23,12 @@ namespace Tryitter.Controllers
         {
             var student = new Student
             {
-                Email = request.Email,
+                Email = request.Email!,
                 Password = request.Password,
                 FullName = request.FullName,
             };
 
-            string token = _tryitterRepository.CreateStudent(student);
+            string token = _tryitterRepository.CreateStudent(student)!;
 
             if (token == null)
             {

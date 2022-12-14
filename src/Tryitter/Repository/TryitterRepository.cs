@@ -16,7 +16,7 @@ namespace Tryitter.Repository
 
         public string? CreateStudent(Student student)
         {
-            Student studentExists = _context.Students.Where(e => e.Email == student.Email).FirstOrDefault();
+            Student studentExists = _context.Students.Where(e => e.Email == student.Email).FirstOrDefault()!;
 
             if (studentExists != null)
             {
@@ -35,12 +35,12 @@ namespace Tryitter.Repository
             _context.SaveChanges();
         }
 
-        public string? StudentLogin(Login login)
+        public string StudentLogin(Login login)
         {
             Student? student = _context.Students.Where(e =>e.Email == login.Email && e.Password == login.Password).FirstOrDefault();
 
             if (student == null)
-                return null;
+                return null!;
 
             return _tokenGenerator.Generate(student);
         }
