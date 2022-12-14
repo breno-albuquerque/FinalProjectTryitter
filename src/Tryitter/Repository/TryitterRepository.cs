@@ -16,7 +16,7 @@ namespace Tryitter.Repository
 
         public string CreateStudent(Student student)
         {
-            Student studentExists = _context.Students.Where(e => e.Email == student.Email).FirstOrDefault();
+            Student studentExists = _context.Students.Where(e => e.Email == student.Email).FirstOrDefault()!;
 
             if (studentExists != null)
                 throw new InvalidOperationException("Student already exists");

@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Tryitter.Transport;
+﻿using Tryitter.Transport;
 using Xunit.Sdk;
 
 namespace TryitterTest.Transport
