@@ -59,7 +59,7 @@ namespace TryitterTest.Integration
            
             var response = await app.DeleteAsync($"/student/{id}");
 
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
 
     }
