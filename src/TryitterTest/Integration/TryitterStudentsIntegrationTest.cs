@@ -41,26 +41,5 @@ namespace TryitterTest.Integration
             var response = await app.GetAsync($"/student/{id}");
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
-
-        [Theory]
-        [InlineData(1)]
-        public async Task ShouldReturnOkDeleteStudent(int id)
-        {
-            var student = new Student
-            {
-                StudentId = id,
-                Email = "test@email.com",
-            };
-
-            var token = new TokenGenerator().Generate(student);
-
-            var app = _factory.CreateClient();
-            app.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-           
-            var response = await app.DeleteAsync($"/student/{id}");
-
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-        }
-
     }
 }
