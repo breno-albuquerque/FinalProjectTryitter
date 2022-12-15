@@ -5,11 +5,11 @@ using Tryitter.Services;
 
 namespace TryitterTest.Integration
 {
-    public class TryitterIntegrationTest : IClassFixture<TestingWebAppFactory<Program>>
+    public class TryitterStudentsIntegrationTest : IClassFixture<TestingWebAppFactory<Program>>
     {
         private readonly TestingWebAppFactory<Program> _factory;
 
-        public TryitterIntegrationTest(TestingWebAppFactory<Program> factory)
+        public TryitterStudentsIntegrationTest(TestingWebAppFactory<Program> factory)
         {
             _factory = factory;
         }
@@ -18,12 +18,6 @@ namespace TryitterTest.Integration
         [InlineData(1)]
         public async Task ShouldBeUnauthorizedWhenGettingStudent(int id)
         {
-            var student = new Student
-            {
-                StudentId = id,
-                Email = "test@email.com",
-            };
-
             var app = _factory.CreateClient();
 
             var response = await app.GetAsync($"/student/{id}");
@@ -50,32 +44,8 @@ namespace TryitterTest.Integration
 
         [Theory]
         [InlineData(1)]
-        public async Task ShouldBeUnauthorizedWhenGettingPost(int id)
+        public async Task ShouldReturnOkDeleteStudent(int id)
         {
-            var post = new Post
-            {
-                PostId = id,
-                Text = "text",
-                Image = "image"
-            };
-
-            var app = _factory.CreateClient();
-
-            var response = await app.GetAsync($"/posts/{id}");
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
-
-        [Theory]
-        [InlineData(1)]
-        public async Task ShouldBeAuthorizedWhenGettingPost(int id)
-        {
-            var post = new Post
-            {
-                PostId = id,
-                Text = "text",
-                Image = "image"
-            };
-
             var student = new Student
             {
                 StudentId = id,
@@ -86,9 +56,10 @@ namespace TryitterTest.Integration
 
             var app = _factory.CreateClient();
             app.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+           
+            var response = await app.DeleteAsync($"/student/{id}");
 
-            var response = await app.GetAsync($"/posts/{id}");
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
 
     }
